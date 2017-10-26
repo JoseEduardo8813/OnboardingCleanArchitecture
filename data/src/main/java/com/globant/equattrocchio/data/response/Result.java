@@ -18,4 +18,10 @@ public class Result {
         this.mImages = images;
     }
 
+    @Override
+    public String toString() {
+        return "Result{" +
+                "mImages=" + mImages +
+                '}';
+    }
 }

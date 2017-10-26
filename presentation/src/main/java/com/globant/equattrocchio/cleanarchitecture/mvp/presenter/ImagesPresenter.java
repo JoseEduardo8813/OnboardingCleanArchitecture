@@ -8,7 +8,9 @@ import com.globant.equattrocchio.cleanarchitecture.util.bus.observers.CallServic
 import com.globant.equattrocchio.data.ImagesServicesImpl;
 import com.globant.equattrocchio.domain.GetLatestImagesUseCase;
 
+import io.reactivex.Observer;
 import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DefaultObserver;
 import io.reactivex.observers.DisposableObserver;
 
@@ -32,9 +34,9 @@ public class ImagesPresenter {
 
     private void onCallServiceButtonPressed() {
 
-        getLatestImagesUseCase.execute(new DisposableObserver<Boolean>() {
+        getLatestImagesUseCase.execute(new DisposableObserver<String>() {
             @Override
-            public void onNext(@NonNull Boolean aBoolean) {
+            public void onNext(@NonNull String aBoolean) {
                 loadFromPreferences();
             }
 
@@ -45,7 +47,28 @@ public class ImagesPresenter {
 
             @Override
             public void onComplete() {
-                new ImagesServicesImpl().getLatestImages(null);
+                new ImagesServicesImpl().getLatestImages(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull String body) {
+                        view.showText(body);
+
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        view.showError();
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
             }
         },null);
 

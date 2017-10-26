@@ -49,4 +49,13 @@ public class Image {
         this.sourceId = sourceId;
     }
 
+    @Override
+    public String toString() {
+        return "Image{" +
+                "id=" + id +
+                ", url='" + url + '\'' +
+                ", largeUrl='" + largeUrl + '\'' +
+                ", sourceId=" + sourceId +
+                '}';
+    }
 }
